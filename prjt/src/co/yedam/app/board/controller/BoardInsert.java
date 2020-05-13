@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 
 import co.yedam.app.board.model.BoardDAO;
 import co.yedam.app.board.model.BoardVO;
@@ -23,7 +24,9 @@ public class BoardInsert extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		request.getRequestDispatcher("/board/boardInsert.jsp").forward(request, response);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -36,15 +39,14 @@ public class BoardInsert extends HttpServlet {
 		
 		BoardDAO dao = new BoardDAO();
 		BoardVO vo = new BoardVO();
-		vo.setTitle(title);
-		vo.setContents(contents);
 		vo.setId(id);
+		vo.setContents(contents);
+		vo.setTitle(title);		
 		
 		dao.BoardInsert(vo);
 		
 		String contextPath = getServletContext().getContextPath();
 		response.sendRedirect(contextPath + "/BoardList.do");
-		
 		
 		
 	}

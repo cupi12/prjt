@@ -1,4 +1,4 @@
-package co.yedam.app.emp;
+package co.yedam.app.dept.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import co.yedam.app.emp.DeptDAO;
-import co.yedam.app.emp.DeptVO;
+import co.yedam.app.dept.model.DeptDAO;
+import co.yedam.app.dept.model.DeptVO;
 import co.yedam.app.emp.EmpDAO;
 import co.yedam.app.emp.EmpVO;
 import co.yedam.app.emp.JobDAO;
@@ -37,7 +37,7 @@ public class EmpInsert extends HttpServlet {
 		List<EmpVO> empList = EmpDAO.getInstance().selectAll();
 		request.setAttribute("empList", empList);
 		
-		request.getRequestDispatcher("emp/empInsert.jsp").forward(request, response);
+		request.getRequestDispatcher("/emp/empInsert.jsp").forward(request, response);
 
 	}
 

@@ -29,17 +29,16 @@ public class BoardUpdate extends HttpServlet {
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
-		String name = request.getParameter("name");
+		String id = request.getParameter("id");
 		
 		BoardDAO dao = new BoardDAO();
-		BoardVO vo = new BoardVO();
+		BoardVO vo = dao.getBoard(seq);
 		vo.setSeq(seq);
 		vo.setTitle(title);
 		vo.setContents(contents);
-		vo.setName(name);
-		int r = dao.BoardUpdate(vo);
+		vo.setId(id);				
 				
-				
+		dao.getBoard(seq);
 		doGet(request, response);
 	}
 

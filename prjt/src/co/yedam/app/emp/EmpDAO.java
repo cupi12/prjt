@@ -121,7 +121,7 @@ public class EmpDAO {
 		try {
 			conn = ConnectionManager.getConnnect();
 			String sql = "select a.department_id, department_name,"
-					+ " sum(salary) sal, count(*) cnt, avg(salary) avgsal " + " from departments a, hr.employees b"
+					+ " sum(salary) sal, count(*) cnt, avg(salary) avgsal " + " from hr.departments a, hr.employees b"
 					+ " where a.department_id = b.department_id" + " group by a.department_id, department_name";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();

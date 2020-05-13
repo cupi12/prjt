@@ -9,7 +9,7 @@
 <body align = "center">
 <!-- Navigation bar -->
 <h3>회원정보</h3>
-<form action="../MemberInsert.do" method="post">
+<form action="MemberInsert.do" method="post">
 ID : <input type="text" name = "id" id="id"/><br/>
 비밀번호 :  <input type = "text" name = "pwd" id="pwd"><br>
 이름 : <input type="text" name = "name" id="name"><br>

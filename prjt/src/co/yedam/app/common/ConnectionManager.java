@@ -15,9 +15,10 @@ public class ConnectionManager {
 		Connection conn = null;
 		try {
 			//driverManager 이용하여 연결
-			String jdbc_url = "jdbc:oracle:thin:@localhost:1521:xe";
-			conn = DriverManager.getConnection(jdbc_url, "edu", "edu");
-			
+			Context initContext = new InitialContext();
+			Context envContext  = (Context)initContext.lookup("java:/comp/env");
+			DataSource ds = (DataSource)envContext.lookup("jdbc/myedu");
+			conn = ds.getConnection();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
