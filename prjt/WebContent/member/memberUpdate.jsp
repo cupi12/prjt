@@ -10,7 +10,7 @@
 <h3>회원정보</h3>
 <form action="../MemberUpdate.do" method="post">
 ID : <input type="text" name = "id" id="id" readonly="readonly" value="${member.id}"/><br/>
-비밀번호 :  <input type = "text" name = "pwd" id="pwd" value="${member.pwd}"><br>
+비밀번호 : <input type = "text" name = "pwd" id="pwd" value="${member.pwd}"><br>
 이름 : <input type="text" name = "name" id="name" value="${member.name}"><br>
 취미 : 
 <input type = "checkbox" name ="hobby" value="h01" checked = "checked"/>등산

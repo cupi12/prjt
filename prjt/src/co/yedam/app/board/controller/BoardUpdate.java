@@ -17,6 +17,10 @@ public class BoardUpdate extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int seq = (Integer.parseInt(request.getParameter("seq")));
+//		String seq = (String)request.getParameter("seq");
+		if(seq == 0) {
+			response.sendRedirect(request.getContextPath() + "/BoardUpdate.do");
+		}
 		
 		BoardDAO dao = new BoardDAO();
 		BoardVO vo = dao.getBoard(seq);
@@ -26,20 +30,22 @@ public class BoardUpdate extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("utf-8"); 
+		
 		int seq = Integer.parseInt(request.getParameter("seq"));
 		String title = request.getParameter("title");
 		String contents = request.getParameter("contents");
 		String id = request.getParameter("id");
 		
 		BoardDAO dao = new BoardDAO();
-		BoardVO vo = dao.getBoard(seq);
+		BoardVO vo = new BoardVO();
 		vo.setSeq(seq);
 		vo.setTitle(title);
 		vo.setContents(contents);
 		vo.setId(id);				
 				
-		dao.getBoard(seq);
-		doGet(request, response);
+		dao.BoardUpdate(vo);
 	}
 
 }

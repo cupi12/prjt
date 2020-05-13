@@ -137,11 +137,11 @@ public class DeptDAO {
 		DeptVO deptVO = null;
 		try {
 			conn = ConnectionManager.getConnnect();		
-			String sql="select location_id,"
-					       + " manager_id,"
+			String sql="select department_id,"
 					       + " department_name,"
-					       + " department_id"
-					       + " from hr.departments "
+					       + " manager_id,"
+					       + " location_id"
+					       + " from departments "
 					       + " order by department_id ";
 			pstmt = conn.prepareStatement(sql);
 			

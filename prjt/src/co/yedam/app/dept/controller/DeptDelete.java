@@ -39,6 +39,8 @@ public class DeptDelete extends HttpServlet {
 		vo.setDepartment_name(department_name);
 		vo.setLocation_id(location_id);
 		vo.setManager_id(manager_id);
+		
+		
 		dao.deptDelete(department_id);
 		
 		String contextPath = getServletContext().getContextPath();

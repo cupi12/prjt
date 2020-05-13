@@ -20,6 +20,7 @@ public class DeptUpdate extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String department_id = (String)request.getSession().getAttribute("department_id");
+		
 		String department_name = (String)request.getSession().getAttribute("department_name");
 		String manager_id = (String)request.getSession().getAttribute("manager_id");
 		String location_id = (String)request.getSession().getAttribute("location_id");
@@ -29,6 +30,7 @@ public class DeptUpdate extends HttpServlet {
 //		}
 		DeptDAO dao = new DeptDAO();
 		DeptVO vo = new DeptVO();
+		
 		
 		request.setAttribute("dept", vo);
 		request.getRequestDispatcher("dept/deptUpdate.jsp").forward(request, response);
