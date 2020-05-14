@@ -25,25 +25,18 @@ public class BoardUpdate extends HttpServlet {
 		BoardDAO dao = new BoardDAO();
 		BoardVO vo = dao.getBoard(seq);
 		
-		request.setAttribute("seq", vo);
+		vo.setSeq(seq);
+		request.setAttribute("vo", dao.getBoard(seq));
 		request.getRequestDispatcher("/board/boardUpdate.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("utf-8"); 
+		request.setCharacterEncoding("utf-8"); 		
 		
-		int seq = Integer.parseInt(request.getParameter("seq"));
-		String title = request.getParameter("title");
-		String contents = request.getParameter("contents");
-		String id = request.getParameter("id");
 		
 		BoardDAO dao = new BoardDAO();
 		BoardVO vo = new BoardVO();
-		vo.setSeq(seq);
-		vo.setTitle(title);
-		vo.setContents(contents);
-		vo.setId(id);				
 				
 		dao.BoardUpdate(vo);
 	}
