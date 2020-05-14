@@ -141,7 +141,7 @@ public class DeptDAO {
 					       + " department_name,"
 					       + " manager_id,"
 					       + " location_id"
-					       + " from departments "
+					       + " from hr.departments "
 					       + " order by department_id ";
 			pstmt = conn.prepareStatement(sql);
 			

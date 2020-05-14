@@ -177,7 +177,7 @@ public class EmpDAO {
 		List<EmpVO> datas = new ArrayList<EmpVO>();
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "select * from employees order by employee_id";
+			String sql = "select * from hr.employees order by employee_id";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
