@@ -3,6 +3,7 @@ package co.yedam.app.member.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import co.yedam.app.common.ConnectionManager;
@@ -47,17 +48,35 @@ public class MemberDAO {
 		return r;
 	}// end of insert
 
-	public ArrayList<MemberVO> getMemberList() {
+	public ArrayList<MemberVO> getMemberList(int start, int end, String id, String name) { //전체조회 + 회원검색해서 조회
+		String strWhere = " where 1 = 1";
+		if (id != null && !id.isEmpty()) {
+			strWhere += " and id = ?";
+		}
+		if (name != null && !name.isEmpty()) {
+			strWhere += " and name like '%' || ? || '%'";
+		}
+		Connection conn = null;
 		ArrayList<MemberVO> list = new ArrayList<MemberVO>();
 		try {
 			// 1. DB연결
-			Connection conn = null;
 			PreparedStatement psmt = null;
 			// 2. 쿼리 준비
 			conn = ConnectionManager.getConnnect();
-			String sql = "select * FROM member order by id";
+			String sql = "select B.* from (select A.*, rownum rn from ("
+					+ "select * FROM member"+  strWhere+ "order by id"
+							+ "  ) A  )B where rn between ? and ?  "; //strWhere 넣어 줘야함
 			psmt = conn.prepareStatement(sql);
 			// 3. statement 실행
+			int position = 1;
+			if (id != null && !id.isEmpty()) {
+				psmt.setString(position++, id);
+			}
+			if (name != null && !name.isEmpty()) {
+				psmt.setString(position++, name);
+			}
+			psmt.setInt(position++, start);
+			psmt.setInt(position, end);
 			ResultSet rs = psmt.executeQuery();
 			while (rs.next()) {
 				MemberVO vo = new MemberVO();
@@ -75,6 +94,7 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			ConnectionManager.close(conn);
 			// 5. 연결 해제
 		}
 		return list;
@@ -149,6 +169,41 @@ public class MemberDAO {
 		}
 
 		return r;
+	}
+	
+	public int getCount(String id, String name) {
+		String strWhere = " where 1 = 1"; //1 과 1이 같아야한다.
+		if (id != null && !id.isEmpty()) {
+			strWhere += " and id = ?";
+		}
+		if (name != null && !name.isEmpty()) {
+			strWhere += " and name like '%' || ? || '%'";
+		}
+		int cnt = 0;
+
+		Connection conn = ConnectionManager.getConnnect();
+		try {
+			String sql = "select count(*) AS cnt from member" + strWhere ;
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			int position = 1;
+			if (id != null && !id.isEmpty()) {
+				psmt.setString(position++, id);
+			}
+			if (name != null && !name.isEmpty()) {
+				psmt.setString(position++, name);
+			}
+			ResultSet rs;
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(conn);
+		}
+		return cnt;
 	}
 
 }// end of class

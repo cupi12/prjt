@@ -34,7 +34,7 @@ public class EmpInsert extends HttpServlet {
 		List<DeptVO> deptList = DeptDAO.getInstance().selectAll();
 		request.setAttribute("deptList", deptList);
 
-		List<EmpVO> empList = EmpDAO.getInstance().selectAll();
+		List<EmpVO> empList = EmpDAO.getInstance().selectAll(1,1000,null,null);
 		request.setAttribute("empList", empList);
 		
 		request.getRequestDispatcher("/emp/empInsert.jsp").forward(request, response);
@@ -51,10 +51,6 @@ public class EmpInsert extends HttpServlet {
 		String phone_number = request.getParameter("phone_number");
 		String hire_date = request.getParameter("hire_date");
 		String job_id = request.getParameter("job_id");
-//		String salary = request.getParameter("salary");
-//		String commission_pct = request.getParameter("commission_pct");
-//		String manager_id = request.getParameter("manager_id");
-//		String department_id = request.getParameter("department_id");
 
 		EmpDAO empDAO = new EmpDAO();
 		

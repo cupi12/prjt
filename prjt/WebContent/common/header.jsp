@@ -98,7 +98,8 @@ footer {
 				<!-- loginId == 'admin'이면, 사원관리 보이도록 -->
 				<c:if test="${loginId == 'admin'}">
 				<li><a href="EmpList.do">사원관리</a></li>
-				<li><a href="DeptList.do">부서관리</a></li>				
+				<li><a href="DeptList.do">부서관리</a></li>
+				<li><a href="MemberList.do">회원관리</a></li>				
 				</c:if>
 				
 				

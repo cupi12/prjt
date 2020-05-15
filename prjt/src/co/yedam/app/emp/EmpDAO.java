@@ -173,13 +173,34 @@ public class EmpDAO {
 	}
 
 	// 전체조회
-	public List<EmpVO> selectAll() {
+	public List<EmpVO> selectAll(int start, int end, String department_id, String first_name) { // 값이 없을수도 있어서 if문을 걸어
+																								// null체크를 해야함.
+		String strWhere = " where 1 = 1";
+		if (department_id != null && !department_id.isEmpty()) {
+			strWhere += " and department_id = ?";
+		}
+		if (first_name != null && !first_name.isEmpty()) {
+			strWhere += " and first_name like '%' || ? || '%'";
+		}
 		List<EmpVO> datas = new ArrayList<EmpVO>();
 		try {
 			conn = ConnectionManager.getConnnect();
-			String sql = "select * from hr.employees order by employee_id";
+			String sql = "select B.* from (select A.*, rownum rn from (" 
+			+ "select * from hr.employees" + strWhere
+					+ "order by employee_id" 
+			+ "  ) A  )B where rn between ? and ?  ";
 			pstmt = conn.prepareStatement(sql);
+			int position = 1;
+			if (department_id != null && !department_id.isEmpty()) {
+				pstmt.setString(position++, department_id);
+			}
+			if (first_name != null && !first_name.isEmpty()) {
+				pstmt.setString(position++, first_name);
+			}
+			pstmt.setInt(position++, start);
+			pstmt.setInt(position++, end);
 			rs = pstmt.executeQuery();
+
 			while (rs.next()) {
 				EmpVO emp = new EmpVO();
 				emp.setCommission_pct(rs.getString("commission_pct"));
@@ -202,15 +223,50 @@ public class EmpDAO {
 		}
 		return datas;
 	}
+
+	public int getCount(String department_id, String first_name) {
+		String strWhere = " where 1 = 1";
+		if (department_id != null && !department_id.isEmpty()) {
+			strWhere += " and department_id = ?";
+		}
+		if (first_name != null && !first_name.isEmpty()) {
+			strWhere += " and first_name like '%' || ? || '%'";
+		}
+		int cnt = 0;
+
+		try {
+			Connection conn = ConnectionManager.getConnnect();
+			String sql = "select count(*) AS cnt from hr.employees" + strWhere ;
+			PreparedStatement psmt = conn.prepareStatement(sql);
+			int position = 1;
+			if (department_id != null && !department_id.isEmpty()) {
+				psmt.setString(position++, department_id);
+			}
+			if (first_name != null && !first_name.isEmpty()) {
+				psmt.setString(position++, first_name);
+			}
+			rs = psmt.executeQuery();
+			if (rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionManager.close(conn);
+		}
+		return cnt;
+	}
+
 	public int empInsert(EmpVO vo) {
-		int r=0;
+		int r = 0;
 		Connection conn = null;
 		PreparedStatement psmt = null;
-		
+
 		conn = ConnectionManager.getConnnect();
 		String sql = "insert into hr.employees (employee_id, first_name, last_name, email, phone_number, hire_date, job_id) values(?,?,?,?,?,?,?)";
 		try {
-			psmt =conn.prepareStatement(sql);
+			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, vo.getEmployee_id());
 			psmt.setString(2, vo.getFirst_name());
 			psmt.setString(3, vo.getLast_name());
@@ -225,11 +281,11 @@ public class EmpDAO {
 			psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			ConnectionManager.close(conn);
 		}
-		
+
 		return 0;
 	}
-	
+
 }

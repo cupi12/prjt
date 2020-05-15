@@ -6,7 +6,9 @@
 <html>
 <head>
 <title></title>
+
 </head>
+
 <jsp:include page="/common/header.jsp"></jsp:include>
 	<h3>게시글 목록</h3>
 	<table border="1">
