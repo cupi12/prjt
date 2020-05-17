@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@taglib prefix="my" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,18 @@
 </head>
 <jsp:include page="/common/header.jsp"></jsp:include>
 	<h3>Department List</h3>
+	<form name ="searchfrm">
+	<input name="p" value ="1" type="hidden">
+	부서명 검색 <select name ="department_name"><br>
+	<option value="">부서목록
+	<option value="10">Administration
+	<option value="20">Marketing
+	<option value="50">Shipping
+	<option value="60">IT
+	<option value="80">SALES
+	</select>
+	<button type="submit">검색</button>
+	</form>
 	<button><a href="DeptInsert.do?seq=${vo.department_id }">부서 추가</a></button>	
 	<table border='1'>
 	<tr align='center'>
@@ -29,7 +42,13 @@
 	</tr>
 	</c:forEach>
 	</table><br>
-	
+	<script>
+	function gopage(p){
+		document.searchfrm.p.value=p;
+		document.searchfrm.submit();
+	}
+	</script>
+	<my:paging paging="${paging }" jsfunc="gopage"/>
 <%@include file = "/common/footer.jsp" %>
 </body>
 </html>

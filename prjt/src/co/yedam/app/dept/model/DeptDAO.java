@@ -28,6 +28,34 @@ public class DeptDAO {
 			instance = new DeptDAO();
 		return instance;
 	}
+	//페이징 처리
+	public int getCount(String department_id) {
+		String strWhere = " where 1 = 1";
+		
+		if(department_id != null && !department_id.isEmpty()) {
+			strWhere = " and department_id = ?";
+		}
+		int cnt=0;
+		
+		try {
+			Connection conn = ConnectionManager.getConnnect();
+			String sql = "select count(*) AS cnt from hr.departments" + strWhere ;
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			int position = 1;
+			if(department_id != null && !department_id.isEmpty()) {
+				pstmt.setString(position++, department_id);
+			}
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ConnectionManager.close(conn);
+		}
+		return cnt;
+	}
 	
 	//등록
 	public void deptInsert(DeptVO vo) {		
@@ -149,10 +177,10 @@ public class DeptDAO {
 			
 			while (rs.next() ) {
 				deptVO = new DeptVO();
-				deptVO.setLocation_id(rs.getString(1));
-				deptVO.setManager_id(rs.getString(2));
-				deptVO.setDepartment_name(rs.getString(3));
-				deptVO.setDepartment_id(rs.getString(4));
+				deptVO.setDepartment_id(rs.getString(1));
+				deptVO.setDepartment_name(rs.getString(2));
+				deptVO.setManager_id(rs.getString(3));
+				deptVO.setLocation_id(rs.getString(4));
 				list.add(deptVO);
 			}
 		} catch(Exception e) {

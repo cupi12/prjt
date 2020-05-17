@@ -13,26 +13,27 @@ import co.yedam.app.dept.model.DeptVO;
 @WebServlet("/DeptUpdate.do")
 public class DeptUpdate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public DeptUpdate() {
-        super();
-    }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String department_id = (String)request.getSession().getAttribute("department_id");
-		
-		String department_name = (String)request.getSession().getAttribute("department_name");
-		String manager_id = (String)request.getSession().getAttribute("manager_id");
-		String location_id = (String)request.getSession().getAttribute("location_id");
+//		String department_name = (String)request.getAttribute("department_name");
+//		String manager_id = (String)request.getAttribute("manager_id");
+//		String location_id = (String)request.getAttribute("location_id");
 //		if(department_id == null) {
 //			response.sendRedirect(request.getContextPath() + "/DeptList.do");
 //			return;
 //		}
+		int seq = (Integer.parseInt(request.getParameter("seq")));
+		if(seq== 0) {
+			response.sendRedirect(request.getContextPath()+"/DeptUpdate.do");
+		}
+		String department_id = Integer.toString(seq);		
+		
+		
 		DeptDAO dao = new DeptDAO();
-		DeptVO vo = new DeptVO();
+		DeptVO vo = dao.getDept(department_id);
 		
-		
-		request.setAttribute("dept", vo);
+//		vo.setDepartment_id(department_id);
+		request.setAttribute("vo", dao.getDept(department_id));
 		request.getRequestDispatcher("dept/deptUpdate.jsp").forward(request, response);
 	}
 
@@ -41,17 +42,11 @@ public class DeptUpdate extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("utf-8");
 		
-		String department_id = request.getParameter("department_id");
-		String department_name = request.getParameter("department_name");
-		String manager_id = request.getParameter("manager_id");
-		String location_id = request.getParameter("location_id");
+		
 		
 		DeptDAO dao = new DeptDAO();
 		DeptVO vo = new DeptVO();
-		vo.setDepartment_id(department_id);
-		vo.setDepartment_name(department_name);
-		vo.setLocation_id(location_id);
-		vo.setManager_id(manager_id);
+		
 		dao.deptUpdate(vo);
 		
 		String contextPath = getServletContext().getContextPath();

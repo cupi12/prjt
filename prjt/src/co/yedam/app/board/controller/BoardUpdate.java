@@ -23,7 +23,7 @@ public class BoardUpdate extends HttpServlet {
 		}
 		
 		BoardDAO dao = new BoardDAO();
-		BoardVO vo = dao.getBoard(seq);
+		BoardVO vo = new BoardVO();
 		
 		vo.setSeq(seq);
 		request.setAttribute("vo", dao.getBoard(seq));
